@@ -8,7 +8,7 @@
 #include "../Math/Bounds.h"
 #include "Shapes.h"
 #include <random>
-
+#include<cmath>
 
 #include "../Renderer/model.h"
 #include "../Renderer/shader.h"
@@ -66,13 +66,16 @@ public:
 
 	void CollisionCheck(Body targetBody) 
 	{
+		
+		const ShapeSphere* currentShape = (const ShapeSphere*) m_shape;
+		const ShapeSphere* targetShape = (const ShapeSphere*) targetBody.m_shape;
 
 		if (targetBody.m_shape->GetType() == Shape::SHAPE_SPHERE)
 		{
-			 printf("Body %f Distance to %f: %f\n", m_id, targetBody.m_id, (DistanceTo(targetBody.m_position).GetLengthSqr()));
-			if ((DistanceTo(targetBody.m_position).GetLengthSqr() ) < ((m_radius + targetBody.m_radius)* (m_radius + targetBody.m_radius)))
+			 //printf("Body %f Distance to %f: %f\n", m_id, targetBody.m_id, (DistanceTo(targetBody.m_position).GetLengthSqr()));
+			if ((DistanceTo(targetBody.m_position).GetLengthSqr() ) <= std::pow(currentShape->m_radius + targetShape->m_radius , 2))
 			{
-				m_linearVelocity = Vec3{ 0,0,0 };
+				m_linearVelocity.Zero();
 			}
 		}
 	}
